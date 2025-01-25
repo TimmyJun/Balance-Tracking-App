@@ -8,3 +8,5 @@
   <li>Automatic balance calculation</li>
   <li>Customized filtering and sorting</li>
 </ul>
+
+<h3>Click <a href="https://timmyjun.github.io/Balance-Tracking-App/">here</a> to try out</h3>
