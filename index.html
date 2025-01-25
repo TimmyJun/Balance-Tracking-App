@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO -->
+  <meta name="description"
+    content="Track your daily expenses and income with our easy-to-use balance tracking application">
+  <title>Balance Tracking App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="main-content">
+    <div class="upper-content">
+      <!-- Header Section -->
+      <header class="main-header">
+        <nav class="main-nav">
+          <h1 class="app-title">Balance Tracker</h1>
+          <button class="settings-btn" aria-label="Open settings">
+            <i class="fa-solid fa-gear"></i>
+          </button>
+        </nav>
+      </header>
+
+      <!-- Date Section -->
+      <section class="date-section">
+        <!-- <div class="date-content">
+          <h2 class="date-month">January</h2>
+          <p class="date-day">15th</p>
+        </div> -->
+      </section>
+
+      <!-- Balance Summary -->
+      <section class="balance-summary">
+        <div class="balance-card">
+          <span class="balance-title">Expenditures</span>
+          <p class="balance-amount" data-amount="12000"></p>
+        </div>
+        <div class="balance-card">
+          <span class="balance-title">Balance</span>
+          <p class="balance-amount" data-amount="50000"></p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Transactions Section -->
+    <section class="transactions-section">
+      <div class="transactions-header">
+        <h2 class="transactions-title">Transactions</h2>
+        <div class="transactions-actions">
+          <button class="sort-btn" aria-label="Toggle sort order">
+            <i class="fa-solid fa-sort"></i>
+          </button>
+          <button class="add-transaction-btn">
+            <i class="fa-solid fa-plus"></i> Add
+          </button>
+        </div>
+      </div>
+
+      <div class="transactions-content">
+        <div class="transactions-list">
+          <!-- add transaction-items -->
+          <!-- Additional transactions can be added here -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://kit.fontawesome.com/361f927d81.js" crossorigin="anonymous"></script>
+  <script src="index.js"></script>
+</body>
+
+</html>

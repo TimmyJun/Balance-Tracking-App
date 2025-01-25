@@ -1,0 +1,653 @@
+/* CSS Variables */
+:root {
+  --primary-bg-color: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+  --secondary-bg-color: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+  --accent-color: #C7ED8D;
+  --button-bg: #B6D4DE;
+  --button-hover: #a2c6d4;
+  --white: #fff;
+  --black: #000;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset & Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+html {
+  background: var(--primary-bg-color);
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Main Layout */
+.main-content {
+  width: 500px;
+  height: calc(100vh - 40px);
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--secondary-bg-color);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.upper-content {
+  flex: 0 0 auto;
+  padding: 1rem;
+}
+
+/* Header Styles */
+.main-header {
+  margin-bottom: 1rem;
+}
+
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-title {
+  color: var(--white);
+  font-size: 1.5rem;
+}
+
+.settings-btn {
+  background: transparent;
+  border: none;
+  color: var(--white);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+/* Date Section */
+.date-section {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.date-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.date-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.date-month {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.date-day {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 700;
+  margin-top: 0.25rem;
+}
+
+/* Balance Summary */
+.balance-summary {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.balance-card {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  width: 12rem;
+  height: 12rem;
+  cursor: pointer;
+}
+
+.balance-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.balance-amount {
+  font-size: 1.5rem;
+  font-weight: bold;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  color: #333;
+}
+
+.balance-amount.updating {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+
+.balance-amount.updated {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* 能量條基礎樣式 */
+.energy-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  z-index: 0;
+  --energy-color: #4CAF50;
+}
+
+/* 能量條背景 */
+.energy-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(var(--energy-color) var(--percentage),
+      rgba(255, 255, 255, 0.2) var(--percentage));
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* 內容容器 */
+.balance-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  transform: scale(0.92);
+  /* 留出邊距顯示能量條 */
+  transition: transform 0.3s ease;
+}
+
+.energy-low {
+  --energy-color: #F44336;
+}
+
+.energy-medium {
+  --energy-color: #FFC107;
+}
+
+.energy-high {
+  --energy-color: #4CAF50;
+}
+
+/* 確保內容可見性 */
+.balance-card:hover .balance-content {
+  transform: scale(0.95);
+}
+
+/* Transactions Section */
+.transactions-section {
+  flex: 1;
+  background: var(--white);
+  border-radius: 20px 20px 0 0;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  /* 重要：允許內容滾動 */
+}
+
+.transactions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.transactions-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.sort-btn {
+  padding: 0.5rem;
+  background: var(--button-bg);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.sort-btn:hover {
+  background: var(--button-hover);
+}
+
+.sort-btn.asc i {
+  transform: rotate(180deg);
+}
+
+.transactions-title {
+  margin-right: auto;
+  font-size: 1.5rem;
+}
+
+.add-transaction-btn {
+  padding: 0.5rem 1rem;
+  background: var(--button-bg);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+}
+
+.add-transaction-btn:hover {
+  background: var(--button-hover);
+}
+
+.transactions-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.transactions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  opacity: 1;
+  transform: translateY(0)
+}
+
+.transaction-item.income .transaction-icon {
+  background: linear-gradient(to right, #4CAF50, #45a049);
+}
+
+.transaction-item.expense .transaction-icon {
+  background: linear-gradient(to right, #f44336, #e53935);
+}
+
+.transaction-details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.transaction-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.transaction-icon {
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+}
+
+.transaction-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-title {
+  font-weight: bold;
+}
+
+.transaction-category,
+.transaction-date {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.transaction-amount {
+  font-weight: bold;
+}
+
+.transaction-amount.income {
+  color: #4CAF50;
+}
+
+.transaction-amount.expense {
+  color: #f44336;
+}
+
+.edit-btn,
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.edit-btn:hover {
+  color: #4CAF50;
+}
+
+.delete-btn:hover {
+  color: #f44336;
+}
+
+/* dialog */
+.transaction-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.transaction-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #666;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.dialog-buttons button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-btn {
+  background: var(--accent-color);
+  color: var(--black);
+}
+
+.submit-btn:hover {
+  background: #b8e27d;
+}
+
+.cancel-btn {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.cancel-btn:hover {
+  background: #ebebeb;
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: transparent;
+  color: #666;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-btn.active {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--black);
+}
+
+/* 類別分析相關樣式 */
+.category-analysis {
+  max-width: 600px !important;
+}
+
+.analysis-content {
+  padding: 1.5rem;
+}
+
+.proportion-table {
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.proportion-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.proportion-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.category-name {
+  font-weight: 500;
+}
+
+.category-amount {
+  color: #666;
+}
+
+.proportion-bar-container {
+  position: relative;
+  height: 24px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.proportion-bar {
+  height: 100%;
+  background: var(--accent-color);
+  border-radius: 12px;
+  transition: width 0.3s ease;
+}
+
+.proportion-percentage {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.total-amount {
+  margin-top: 1rem;
+  text-align: right;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.close-btn {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent-color);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.close-btn:hover {
+  background: #b8e27d;
+}
+
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .main-content {
+    width: 95%;
+    height: calc(100vh - 20px);
+    margin: 10px;
+  }
+
+  .balance-card {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .transaction-dialog {
+    width: 95%;
+    padding: 1.5rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 0.625rem;
+    font-size: 16px;
+    /* 防止 iOS 自動縮放 */
+  }
+
+  .dialog-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .dialog-buttons button {
+    width: 100%;
+    padding: 0.875rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .transaction-dialog {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0;
+    height: 100vh;
+    top: 0;
+    transform: translate(-50%, 0);
+  }
+
+  .transaction-form {
+    gap: 1rem;
+  }
+
+  .form-group {
+    gap: 0.25rem;
+  }
+
+  .form-group label {
+    font-size: 0.875rem;
+  }
+}
+
+/* 處理橫向模式 */
+@media (max-height: 600px) and (orientation: landscape) {
+  .transaction-dialog {
+    width: 80%;
+    max-height: 85vh;
+    padding: 1rem;
+  }
+
+  .transaction-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .dialog-buttons {
+    grid-column: span 2;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .dialog-buttons button {
+    width: auto;
+  }
+}
+
+/* 確保在更大的螢幕上有最大寬度限制 */
+@media (min-width: 1200px) {
+  .transaction-dialog {
+    max-width: 600px;
+  }
+}
