@@ -6,10 +6,17 @@ class TransactionManager {
     this.initialBalance = parseFloat(localStorage.getItem('initialBalance')) || 0;
   }
 
+  // 簡化本地存儲邏輯
+  _saveToStorage() {
+    localStorage.setItem('transactions', JSON.stringify(this.transactions));
+    localStorage.setItem('currentId', this.currentId.toString());
+    localStorage.setItem('initialBalance', this.initialBalance.toString());
+  }
+
   // 設定初始餘額
   setInitialBalance(amount) {
     this.initialBalance = parseFloat(amount)
-    localStorage.setItem('initialBalance', amount.toString())
+    this._saveToStorage()
   }
 
   // 取得初始餘額
@@ -17,36 +24,35 @@ class TransactionManager {
     return this.initialBalance
   }
 
+  // 統一方法處理交易
+  _processTransaction(transaction, isEdit = false) {
+    const processedTransaction = {
+      id: isEdit ? transaction.id : this.currentId++,
+      ...transaction,
+      amount: parseFloat(transaction.amount),
+      date: transaction.date || new Date().toISOString.split("T")[0],
+      [isEdit ? 'updatedAt' : 'createAt']: new Date().toISOString()
+    }
+
+    if (isEdit) {
+      const index = this.transactions.findIndex(t => t.id === processedTransaction.id)
+      this.transactions[index] = processedTransaction
+    } else {
+      this.transactions.unshift(processedTransaction)
+    }
+
+    this._saveToStorage()
+    return processedTransaction
+  }
+
   // 新增交易
   addTransaction(transaction) {
-    const newTransaction = {
-      id: this.currentId++,
-      title: transaction.title,
-      amount: parseFloat(transaction.amount),
-      category: transaction.category,
-      type: transaction.type,
-      date: transaction.date || new Date().toISOString().split('T')[0],
-      createdAt: new Date().toISOString()
-    };
-    this.transactions.unshift(newTransaction);
-    this.saveToLocalStorage();
-
-    return newTransaction;
+    return this._processTransaction(transaction)
   }
 
   // 編輯交易
   editTransaction(id, updatedData) {
-    const index = this.transactions.findIndex(t => t.id === id);
-    if (index !== -1) {
-      this.transactions[index] = {
-        ...this.transactions[index],
-        ...updatedData,
-        updatedAt: new Date().toISOString()
-      };
-      this.saveToLocalStorage();
-      return true;
-    }
-    return false;
+    return this._processTransaction({...updatedData, id}, true)
   }
 
   // 刪除交易
@@ -54,7 +60,7 @@ class TransactionManager {
     const index = this.transactions.findIndex(t => t.id === id);
     if (index !== -1) {
       this.transactions.splice(index, 1);
-      this.saveToLocalStorage();
+      this._saveToStorage()
       return true;
     }
     return false;
@@ -65,41 +71,34 @@ class TransactionManager {
     return this.transactions;
   }
 
-  // 儲存到 LocalStorage
-  saveToLocalStorage() {
-    localStorage.setItem('transactions', JSON.stringify(this.transactions));
-    localStorage.setItem('currentId', this.currentId.toString());
+  // 統一的類別比例計算
+  _calculateTotal(type){
+    return parseFloat(
+      this.transactions.filter(t => t.type === type)
+      .reduce((total, t) => total + parseFloat(t.amount), 0)
+      .toFixed(2)
+    )
   }
 
   // 計算總支出
   calculateTotalExpenses() {
-    const total = this.transactions
-      .filter(t => t.type === 'expense')
-      .reduce((total, transaction) => total + parseFloat(transaction.amount), 0);
-
-    return parseFloat(total.toFixed(2))
+    return this._calculateTotal('expense')
   }
 
   // 計算總收入
   calculateTotalIncome() {
-    const total = this.transactions
-      .filter(t => t.type === 'income')
-      .reduce((total, transaction) => total + parseFloat(transaction.amount), 0);
-    return parseFloat(total.toFixed(2));
+    return this._calculateTotal("income")
   }
 
   // 計算類別佔比
   calculateCategoryProportions(type) {
     const transactions = this.transactions.filter(t => t.type === type)
     const total = transactions.reduce((sum, t) => sum + t.amount, 0)
-
-    const categories = {}
-    transactions.forEach(t => {
-      if (!categories[t.category]) {
-        categories[t.category] = 0
-      }
-      categories[t.category] += t.amount
-    })
+    
+    const categories = transactions.reduce((acc, t) => {
+      acc[t.category] = (acc[t.category] || 0 ) + t.amount
+      return acc
+    }, {})
 
     return Object.entries(categories).map(([category, amount]) => ({
       category,
