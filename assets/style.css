@@ -221,7 +221,7 @@ html {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  /* 重要：允許內容滾動 */
+  /* 允許內容滾動 */
 }
 
 .transactions-header {
