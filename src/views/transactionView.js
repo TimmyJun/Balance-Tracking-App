@@ -100,8 +100,9 @@ export class TransactionView {
     this.incomeCard.updateAmount(totalBalance);
 
     // Update energy bars
-    this.expenseCard.updateEnergyBar(expenses, totalBalance);
-    this.incomeCard.updateEnergyBar(totalBalance, totalBalance);
+    const expensePercentage = expenses / totalBalance;
+    this.expenseCard.updateEnergyBar(expensePercentage, 1);
+    this.incomeCard.updateEnergyBar(1 - expensePercentage, 1);
   }
 
   // Dialog Management
