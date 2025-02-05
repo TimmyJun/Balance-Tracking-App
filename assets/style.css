@@ -278,6 +278,7 @@ html {
 .transactions-content {
   flex: 1;
   overflow-y: auto;
+  padding-bottom: env(safe-area-inset-bottom, 80px);
 }
 
 .transactions-list {
