@@ -95,14 +95,17 @@ export class TransactionView {
     });
   }
 
-  updateBalances({ expenses, income, totalBalance }) {
+  updateBalances({ expenses, income, totalBalance, initialBalance }) {
     this.expenseCard.updateAmount(expenses);
     this.incomeCard.updateAmount(totalBalance);
 
+    const totalFunds = income + initialBalance;
+    const expenseRatio = expenses / totalFunds;
+    const balanceRatio = totalBalance / totalFunds;
+
     // Update energy bars
-    const expensePercentage = expenses / totalBalance;
-    this.expenseCard.updateEnergyBar(expensePercentage, 1);
-    this.incomeCard.updateEnergyBar(1 - expensePercentage, 1);
+    this.expenseCard.updateEnergyBar(expenseRatio, 1);
+    this.incomeCard.updateEnergyBar(balanceRatio, 1);
   }
 
   // Dialog Management

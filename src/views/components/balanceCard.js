@@ -32,6 +32,12 @@ export class BalanceCard {
     if (!energyBar) return;
 
     let percentage = (value / total) * 100;
+
+    // 設定最小顯示值
+    if (this.type === 'income' && value > 0) {
+      percentage = Math.max(percentage, 1); // 最少顯示 1%
+    }
+
     percentage = Math.min(Math.max(percentage, 0), 100);
 
     energyBar.style.setProperty('--percentage', `${percentage}%`);

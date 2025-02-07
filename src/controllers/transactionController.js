@@ -129,7 +129,8 @@ export class TransactionController {
     const balanceInfo = {
       expenses: this.model.calculateTotalExpenses(),
       income: this.model.calculateTotalIncome(),
-      totalBalance: this.model.calculateCurrentBalance()
+      totalBalance: this.model.calculateCurrentBalance(),
+      initialBalance: this.model.getInitialBalance()
     };
 
     this.view.updateBalances(balanceInfo);
