@@ -80,6 +80,7 @@ html {
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
+  cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -559,6 +560,105 @@ html {
   background: #b8e27d;
 }
 
+/* 日期選擇器對話框 */
+.date-picker-dialog .date-inputs {
+  display: flex;
+  gap: 1rem;
+}
+
+.date-picker-dialog .date-inputs select {
+  flex: 1;
+}
+
+.date-picker-dialog .hidden {
+  display: none;
+}
+
+/* 時段分析報表樣式 */
+.period-analysis {
+  max-width: 700px !important;
+}
+
+.period-info {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.summary-cards {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.summary-card {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+.summary-card.income {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.summary-card.expense {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.summary-card h4 {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.summary-data {
+  font-size: 1.1rem;
+}
+
+.net-income {
+  text-align: center;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.net-income p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.net-income .positive {
+  color: #4CAF50;
+}
+
+.net-income .negative {
+  color: #f44336;
+}
+
+.category-analysis h4 {
+  margin: 1rem 0;
+}
+
+.category-details {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+.category-stats {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.category-count {
+  font-size: 0.9rem;
+  color: #666;
+}
+
 
 /* Responsive Design */
 @media (max-width: 600px) {
@@ -597,6 +697,19 @@ html {
   .dialog-buttons button {
     width: 100%;
     padding: 0.875rem;
+  }
+
+  .summary-cards {
+    flex-direction: column;
+  }
+
+  .date-picker-dialog .date-inputs {
+    flex-direction: column;
+  }
+
+  .proportion-info {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 }
 

@@ -96,6 +96,52 @@ export class TransactionController {
         this.view.showInitialBalanceDialog(this.model.getInitialBalance());
         break;
 
+      case 'datePickerRequested':
+        try {
+          const availableYears = this.model.getAvailableYears();
+          this.view.showDatePickerDialog(availableYears);
+        } catch (error) {
+          this._handleReportError(error);
+        }
+        break;
+
+      case 'periodAnalysisRequested':
+        try {
+          let report;
+          if (data.type === 'month') {
+            // 檢查月份輸入
+            const year = parseInt(data.year);
+            const month = parseInt(data.month);
+
+            if (isNaN(year) || isNaN(month) || month < 1 || month > 12) {
+              this.view.showError('請選擇有效的年份和月份');
+              return;
+            }
+
+            report = this.model.generateMonthlyReport(year, month);
+          } else {
+            // 處理自定義日期範圍
+            const startDate = new Date(data.startDate);
+            const endDate = new Date(data.endDate);
+
+            if (!this._validateDateRange(startDate, endDate)) {
+              return;
+            }
+
+            report = this.model.generateDateRangeReport(startDate, endDate);
+          }
+
+          // 確保報表資料存在
+          if (!report || (!report.periodSummary && !report.categoryAnalysis)) {
+            throw new Error('無法生成報表資料');
+          }
+
+          this.view.showPeriodAnalysisReport(report);
+        } catch (error) {
+          this._handleReportError(error);
+        }
+        break;
+
       default:
         console.warn('Unhandled view event:', eventName);
     }
@@ -119,6 +165,31 @@ export class TransactionController {
         console.warn('Unhandled model event:', eventType);
     }
   }
+
+  // 處理報表生成相關的錯誤
+  _handleReportError(error) {
+    console.error('報表生成錯誤:', error);
+    this.view.showError('生成報表時發生錯誤，請稍後再試');
+  }
+
+  // 驗證日期範圍
+  _validateDateRange(startDate, endDate) {
+    if (!startDate || !endDate) {
+      this.view.showError('請選擇有效的日期範圍');
+      return false;
+    }
+    if (startDate > endDate) {
+      this.view.showError('開始日期不能晚於結束日期');
+      return false;
+    }
+    if (endDate > new Date()) {
+      this.view.showError('結束日期不能晚於今天');
+      return false;
+    }
+    return true;
+  }
+
+
 
   // Update the entire view
   _updateView() {

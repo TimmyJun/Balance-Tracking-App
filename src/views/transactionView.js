@@ -2,6 +2,7 @@ import { DateDisplay } from './components/dateDisplay.js';
 import { BalanceCard } from './components/balanceCard.js';
 import { TransactionDialog } from './components/transactionDialog.js';
 import { TransactionItem } from './components/transactionItem.js';
+import { DatePickerDialog } from './components/datePickerDialog.js'
 
 export class TransactionView {
   constructor() {
@@ -45,6 +46,8 @@ export class TransactionView {
       document.querySelector('.balance-card:last-of-type'),
       'income'
     );
+
+    this.dateSection = document.querySelector('.date-section')
   }
 
   // Setup Event Listeners
@@ -74,6 +77,10 @@ export class TransactionView {
     this.incomeCard.element.addEventListener('click', () => {
       this._notify('categoryAnalysisRequested', { type: 'income' });
     });
+
+    this.dateSection.addEventListener('click', () => {
+      this._notify('datePickerRequested');
+    })
   }
 
   // UI Update Methods
@@ -228,6 +235,116 @@ export class TransactionView {
 
     document.body.appendChild(dialog);
     dialog.showModal();
+  }
+
+  // 顯示日期選擇器對話框
+  showDatePickerDialog(availableYears) {
+    const dialog = new DatePickerDialog(availableYears);
+    dialog.onSubmit = (data) => {
+      this._notify('periodAnalysisRequested', data);
+    };
+    dialog.show();
+  }
+
+  // 顯示時段分析報表
+  showPeriodAnalysisReport(report) {
+    const dialog = document.createElement('dialog');
+    dialog.className = 'transaction-dialog period-analysis';
+
+    const { periodSummary, categoryAnalysis } = report;
+
+    dialog.innerHTML = `
+    <div class="analysis-content">
+      <h3>時段分析報表</h3>
+      <div class="period-info">
+        <p>分析期間：${periodSummary.startDate} 至 ${periodSummary.endDate}</p>
+        <p>總天數：${periodSummary.dayCount} 天</p>
+      </div>
+
+      <div class="summary-cards">
+        <div class="summary-card income">
+          <h4>收入統計</h4>
+          <div class="summary-data">
+            <p>總收入：$${periodSummary.totalIncome}</p>
+            <p>日均收入：$${periodSummary.dailyAvgIncome}</p>
+          </div>
+        </div>
+        <div class="summary-card expense">
+          <h4>支出統計</h4>
+          <div class="summary-data">
+            <p>總支出：$${periodSummary.totalExpense}</p>
+            <p>日均支出：$${periodSummary.dailyAvgExpense}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="net-income">
+        <h4>淨收入</h4>
+        <p class="${periodSummary.netIncome >= 0 ? 'positive' : 'negative'}">
+          $${periodSummary.netIncome}
+        </p>
+      </div>
+
+      <div class="category-analysis">
+        <h4>收入分類統計</h4>
+        <div class="proportion-table">
+          ${this._generateCategoryAnalysisHTML(categoryAnalysis.income)}
+        </div>
+
+        <h4>支出分類統計</h4>
+        <div class="proportion-table">
+          ${this._generateCategoryAnalysisHTML(categoryAnalysis.expense)}
+        </div>
+      </div>
+
+      <button class="close-btn">關閉</button>
+    </div>
+  `;
+
+    const closeDialog = () => {
+      dialog.close();
+      dialog.remove();
+    };
+
+    dialog.querySelector('.close-btn').addEventListener('click', closeDialog);
+    dialog.addEventListener('click', (e) => {
+      const rect = dialog.getBoundingClientRect();
+      if (
+        e.clientX < rect.left ||
+        e.clientX > rect.right ||
+        e.clientY < rect.top ||
+        e.clientY > rect.bottom
+      ) {
+        closeDialog();
+      }
+    });
+
+    document.body.appendChild(dialog);
+    dialog.showModal();
+  }
+
+  // 生成類別分析 HTML
+  _generateCategoryAnalysisHTML(categories) {
+    return categories
+      .map(item => `
+      <div class="proportion-row">
+        <div class="proportion-info">
+          <span class="category-name">${item.category}</span>
+          <span class="category-stats">
+            <span class="category-amount">$${item.amount}</span>
+            <span class="category-count">(${item.count} 筆)</span>
+          </span>
+        </div>
+        <div class="proportion-bar-container">
+          <div class="proportion-bar" style="width: ${item.percentage}%"></div>
+          <span class="proportion-percentage">${item.percentage}%</span>
+        </div>
+        <div class="category-details">
+          平均金額：$${item.avgAmount}
+        </div>
+      </div>
+    `)
+      .join('');
   }
 
   // Error Handling
