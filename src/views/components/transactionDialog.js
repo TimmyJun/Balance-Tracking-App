@@ -1,3 +1,5 @@
+import { DateUtils } from '../../utils/dateUtils.js';
+
 export class TransactionDialog {
   constructor(transaction = null, categories = {
     expense: ['Transportation', 'Food', 'Entertainment', 'Other'],
@@ -12,6 +14,8 @@ export class TransactionDialog {
   _createDialog() {
     const dialog = document.createElement('dialog');
     dialog.className = 'transaction-dialog';
+
+    const currentDate = this.transaction?.date || DateUtils.getLocalDate()
 
     dialog.innerHTML = `
       <form class="transaction-form">
@@ -47,7 +51,7 @@ export class TransactionDialog {
         <div class="form-group">
           <label for="date">Date</label>
           <input type="date" id="date" name="date" required 
-                 value="${this.transaction?.date || new Date().toISOString().split('T')[0]}">
+                 value="${currentDate}">
         </div>
 
         <div class="dialog-buttons">

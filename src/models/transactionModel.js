@@ -1,4 +1,5 @@
 import { Transaction } from './transaction.js';
+import { DateUtils } from '../utils/dateUtils.js'
 
 export class TransactionModel {
   constructor() {
@@ -215,16 +216,18 @@ export class TransactionModel {
   // 根據時間範圍獲取交易數據
   getTransactionsByDateRange(startDate, endDate) {
     return this._transactions.filter(transaction => {
-      const transactionDate = new Date(transaction.date);
-      return transactionDate >= startDate && transactionDate <= endDate;
-    });
+      const transactionDate = DateUtils.formatToLocalDate(transaction.date)
+      const start = DateUtils.formatToLocalDate(startDate)
+      const end = DateUtils.formatToLocalDate(endDate)
+      return transactionDate >= start && transactionDate <= end
+    })
   }
 
   // 獲取指定月份的交易數據
   getTransactionsByMonth(year, month) {
-    const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 0);
-    return this.getTransactionsByDateRange(startDate, endDate);
+    const startDate = new Date(year, month - 1, 1)
+    const endDate = new Date(year, month, 0)
+    return this.getTransactionsByDateRange(startDate, endDate)
   }
 
   // 計算指定時間範圍內的收支分析

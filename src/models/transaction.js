@@ -1,3 +1,5 @@
+import { DateUtils } from '../utils/dateUtils.js';
+
 export class Transaction {
   constructor({ id, title, amount, category, date, type, createdAt, updatedAt }) {
     this.id = id;
@@ -40,7 +42,7 @@ export class Transaction {
   }
 
   _getFormattedDate() {
-    return new Date().toISOString().split('T')[0];
+    return DateUtils.getLocalDate()
   }
 
   // Public methods

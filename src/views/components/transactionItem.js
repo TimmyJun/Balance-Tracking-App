@@ -1,3 +1,5 @@
+import { DateUtils } from '../../utils/dateUtils.js';
+
 export class TransactionItem {
   constructor(transaction) {
     this.transaction = transaction;
@@ -57,7 +59,7 @@ export class TransactionItem {
   }
 
   _formatDate(dateString) {
-    return new Date(dateString).toLocaleDateString();
+    return DateUtils.formatToDisplayDate(dateString)
   }
 
   // Public methods for updating the transaction item
