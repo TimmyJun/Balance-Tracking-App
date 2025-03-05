@@ -1,12 +1,45 @@
-<h1>Balance Tracking App</h1>
-<h2>Description</h2>
-<p>A simple balance tracking application that helps users manage their income and expenses effortlessly.</p>
-<img width="796" alt="截圖 2025-01-25 下午11 13 48" src="https://github.com/user-attachments/assets/001729d7-bf75-4730-901d-b86785fde559" />
-<h2>Functions</h2>
-<ul>
-  <li>Add Income and Expense records</li>
-  <li>Automatic balance calculation</li>
-  <li>Customized filtering and sorting</li>
-</ul>
+# Balance Tracking App
 
-<h3>Click <a href="https://timmyjun.github.io/Balance-Tracking-App/">here</a> to try out</h3>
+A simple web app designed to help users track their expenses and maintain financial awareness.
+
+## 🌟 Features
+- **Expense Tracking**: Log daily expenses and categorize them.
+- **Budget Management**: Monitor spending to stay within budget.
+- **Intuitive UI**: Clean and easy-to-use interface.
+- **Real-Time Calculation**: Instantly see your remaining balance.
+- **Responsive Design**: Optimized for desktop and mobile devices.
+
+## 🚀 Live Demo
+Try it out here: **[Balance Tracking App](https://timmyjun.github.io/Balance-Tracking-App/)**
+
+## 🛠️ Tech Stack
+- **Frontend**: HTML, CSS, JavaScript
+- **Deployment**: GitHub Pages
+
+## 📖 Usage
+1. Open the [Balance Tracking App](https://timmyjun.github.io/Balance-Tracking-App/).
+2. Enter your initial budget.
+3. Log your expenses and assign categories.
+4. View your balance and spending summary.
+
+## 📌 Installation (For Development)
+If you want to run the project locally:
+```bash
+# Clone the repository
+git clone https://github.com/timmyjun/Balance-Tracking-App.git
+
+# Navigate to the project directory
+cd Balance-Tracking-App
+
+# Open index.html in your browser
+```
+
+## 🤝 Contributing
+Contributions are welcome! Feel free to fork the repository and submit a pull request.
+
+## 📬 Contact
+For any questions or feedback, feel free to reach out!
+
+---
+
+Start tracking your expenses and take control of your finances! 💰📊
